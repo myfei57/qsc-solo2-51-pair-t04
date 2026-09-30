@@ -62,6 +62,10 @@ class InvalidStagesError(ContractError):
     """Raised when a membrane array is regrouped onto a non-positive stage count."""
 
 
+class NoActiveRoundError(ContractError):
+    """Raised when a sweep is recorded without an active production round."""
+
+
 class TransferFailedError(ContractError):
     """Raised when a tank transfer names an unknown endpoint or a bad amount."""
 

@@ -9,6 +9,11 @@ AUDIT_SEQUENCE = "audit/sequence"
 AUDIT_EVENT_PREFIX = "audit/event/"
 AUDIT_LAST_PREFIX = "audit/last/"
 
+MEMBRANE_ATTRIBUTION = "membrane/attribution"
+MEMBRANE_ROUNDS = "membrane/rounds"
+MEMBRANE_CURRENT_ROUND = "membrane/current_round"
+MEMBRANE_ROUND_SEQUENCE = "membrane/round_sequence"
+
 
 def audit_event_key(sequence: int) -> str:
     """Key holding the event written at ``sequence``."""
