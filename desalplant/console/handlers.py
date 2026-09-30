@@ -1,6 +1,6 @@
 """Read-only console handlers."""
 
-from . import probes, routes
+from . import probes, routes, trains
 from .http import Request, Response, json_response
 
 
@@ -105,6 +105,41 @@ def version(console, request: Request) -> Response:
     return json_response({"label": console.plant.build().label()})
 
 
+def train_list(console, request: Request) -> Response:
+    """Registered trains and their fixed migration policies."""
+    return json_response(trains.list_trains(console.plant, request))
+
+
+def train_assignments(console, request: Request) -> Response:
+    """Assignment version chain of one train."""
+    return json_response(trains.list_assignments(console.plant, request))
+
+
+def train_rounds(console, request: Request) -> Response:
+    """Rounds of one train with their pinned assignment versions."""
+    return json_response(trains.list_rounds(console.plant, request))
+
+
+def train_verdict(console, request: Request) -> Response:
+    """Frozen verdict of a closed round from the audit record (external data)."""
+    return json_response(trains.stored_verdict(console.plant, request))
+
+
+def train_replay(console, request: Request) -> Response:
+    """Historical verdict reconstructed under the version in force at the time."""
+    return json_response(trains.replay(console.plant, request))
+
+
+def train_live(console, request: Request) -> Response:
+    """Real-time verdict of the round still in flight."""
+    return json_response(trains.live_verdict(console.plant, request))
+
+
+def train_consistency(console, request: Request) -> Response:
+    """Fingerprint cross-check across the realtime, audit and replay views."""
+    return json_response(trains.consistency(console.plant, request))
+
+
 ROUTE_TABLE = (
     (routes.HEALTH, health),
     (routes.STATUS, status),
@@ -125,4 +160,11 @@ ROUTE_TABLE = (
     (routes.SUMMARY, summary),
     (routes.SELFTEST, selftest),
     (routes.VERSION, version),
+    (routes.TRAINS, train_list),
+    (routes.TRAIN_ASSIGNMENTS, train_assignments),
+    (routes.TRAIN_ROUNDS, train_rounds),
+    (routes.TRAIN_VERDICT, train_verdict),
+    (routes.TRAIN_REPLAY, train_replay),
+    (routes.TRAIN_VERDICT + "/live", train_live),
+    (routes.TRAIN_CONSISTENCY, train_consistency),
 )

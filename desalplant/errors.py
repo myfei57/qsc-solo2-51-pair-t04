@@ -62,6 +62,30 @@ class InvalidStagesError(ContractError):
     """Raised when a membrane array is regrouped onto a non-positive stage count."""
 
 
+class InvalidAssignmentError(ContractError):
+    """Raised when a sensor-to-stage version leaves a stage or sensor uncovered."""
+
+
+class AssignmentOrderError(ContractError):
+    """Raised when an assignment version does not advance in order."""
+
+
+class TrainPolicyFixedError(ContractError):
+    """Raised when a train's migration policy is changed after it was fixed."""
+
+
+class RoundConflictError(ContractError):
+    """Raised when a round lifecycle action contradicts the current round."""
+
+
+class UnknownTrainError(ContractError):
+    """Raised when an operation names a train that was never registered."""
+
+
+class UnknownRoundError(ContractError):
+    """Raised when an operation names a round that was never opened."""
+
+
 class TransferFailedError(ContractError):
     """Raised when a tank transfer names an unknown endpoint or a bad amount."""
 

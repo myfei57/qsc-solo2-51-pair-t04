@@ -26,6 +26,7 @@ from ..ro.membrane import Membrane
 from ..ro.output import Output
 from ..ro.permeate import Permeate
 from ..ro.recovery import Recovery
+from ..monitor import TrainMonitor
 from ..store import keys
 from ..store.snapshot import Snapshot
 from ..store.store import Store
@@ -76,6 +77,7 @@ class Plant:
         self.product = ProductTank()
         self.level = Level()
         self.brine_stream = BrineStream(concentration=0.6)
+        self.train_monitor = TrainMonitor(store, self.clock, recorder)
 
     # ------------------------------------------------------------- lifecycle
 

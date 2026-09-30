@@ -4,11 +4,13 @@ from typing import Any, Callable
 
 from ..errors import (
     AlarmNotActiveError,
+    AssignmentOrderError,
     ContractError,
     FeedAlreadyStoppedError,
     FlushNotEffectiveError,
     FlowNotReadyError,
     HandoffIncompleteError,
+    InvalidAssignmentError,
     InvalidEfficiencyError,
     InvalidStagesError,
     MediaNotReadyError,
@@ -17,10 +19,14 @@ from ..errors import (
     PumpAlreadyStoppedError,
     ResidualAntiscalantError,
     RinseFailedError,
+    RoundConflictError,
     StoreError,
     SupplyInterruptedError,
+    TrainPolicyFixedError,
     TransferFailedError,
     UnknownKeyError,
+    UnknownRoundError,
+    UnknownTrainError,
     ValveNotOpenError,
 )
 from . import handlers, operations, routes
@@ -43,9 +49,12 @@ CONFLICT = (
     TransferFailedError,
     RinseFailedError,
     MediaNotReadyError,
+    RoundConflictError,
+    TrainPolicyFixedError,
+    AssignmentOrderError,
 )
-MALFORMED = (InvalidEfficiencyError, InvalidStagesError)
-MISSING = (UnknownKeyError,)
+MALFORMED = (InvalidEfficiencyError, InvalidStagesError, InvalidAssignmentError)
+MISSING = (UnknownKeyError, UnknownTrainError, UnknownRoundError)
 
 ROUTES: tuple[tuple[str, str, Handler], ...] = (
     *((method, path, handler) for path, handler in handlers.ROUTE_TABLE for method in ("GET",)),
@@ -53,6 +62,11 @@ ROUTES: tuple[tuple[str, str, Handler], ...] = (
     ("POST", routes.SHUTDOWN, operations.shutdown),
     ("POST", routes.SWITCH, operations.switch),
     ("POST", routes.MAINTAIN, operations.maintain),
+    ("POST", routes.TRAINS, operations.train_register),
+    ("POST", routes.TRAIN_ASSIGNMENTS, operations.train_assignment),
+    ("POST", routes.TRAIN_ROUNDS, operations.train_round_open),
+    ("POST", routes.TRAIN_ROUNDS + "/close", operations.train_round_close),
+    ("POST", routes.TRAIN_SWEEPS, operations.train_sweep),
 )
 
 
